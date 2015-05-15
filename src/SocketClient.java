@@ -34,6 +34,7 @@ public class SocketClient {
 			public void actionPerformed(ActionEvent arg0) {
 				if(username.getText().length()!=0)
 				{
+					username.setEditable(false);
 					user=username.getText();
 					frame.remove(login);
 					frame.add(label);
@@ -53,6 +54,7 @@ public class SocketClient {
 				answer="A";
 				noanswerchosen=false;
 				frame.remove(choices);
+				label.setText("You chose A");
 				frame.add(label);
 				frame.revalidate();
 				frame.repaint();
@@ -63,6 +65,7 @@ public class SocketClient {
 				answer="B";
 				noanswerchosen=false;
 				frame.remove(choices);
+				label.setText("You chose B");
 				frame.add(label);
 				frame.revalidate();
 				frame.repaint();
@@ -73,6 +76,7 @@ public class SocketClient {
 				answer="C";
 				noanswerchosen=false;
 				frame.remove(choices);
+				label.setText("You chose C");
 				frame.add(label);
 				frame.revalidate();
 				frame.repaint();
@@ -83,11 +87,16 @@ public class SocketClient {
 				answer="D";
 				noanswerchosen=false;
 				frame.remove(choices);
+				label.setText("You chose D");
 				frame.add(label);
 				frame.revalidate();
 				frame.repaint();
 			}
 		});
+		choices.add(a);
+		choices.add(b);
+		choices.add(c);
+		choices.add(d);
 		frame.setVisible(true);
 	}
 	public SocketClient(){
@@ -99,7 +108,7 @@ public class SocketClient {
 		String host = "localhost";
 		/** Define a port */
 		int port = 19999;
-		StringBuffer instr = new StringBuffer();
+		
 		String TimeStamp;
 		System.out.println("SocketClient initialized");
 		try {
@@ -107,6 +116,8 @@ public class SocketClient {
 			InetAddress address = InetAddress.getByName(host);
 			/** Establish a socket connection */
 			Socket connection = new Socket(address, port);
+			System.out.println("Socket Created, waiting to submit username");
+			while(!cansubmit){}
 			/** Instantiate a BufferedOutputStream object */
 			BufferedOutputStream bos = new BufferedOutputStream(connection.getOutputStream());
 			/** Instantiate an OutputStreamWriter object with the optional character
@@ -122,34 +133,44 @@ public class SocketClient {
 	            /** Instantiate a BufferedInputStream object for reading
 			 * incoming socket streams.
 			 */
+			System.out.println("Username submitted");	
+			BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
+			/**Instantiate an InputStreamReader with the optional
+			 * character encoding.
+			 */
+			
 			while(cont)
 			{
-				BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-				/**Instantiate an InputStreamReader with the optional
-				 * character encoding.
-				 */
-
-				isr = new InputStreamReader(bis, "US-ASCII");
-
 				/**Read the socket's InputStream and append to a StringBuffer */
+				isr = new InputStreamReader(bis, "US-ASCII");
+				StringBuffer instr = new StringBuffer();
 				int c;
+				System.out.println("Waiting for server instructions");
 				while ( (c = isr.read()) != 13)
 					instr.append( (char) c);
+				c=0;
+				System.out.println("Server instruction recieved");
 				if(instr.toString().equals("endgame"))
 					cont=false;
 				else if(instr.toString().equals("start"))
 				{
-					while(noanswerchosen)
-					{}
+					System.out.println("waiting to submit answer");
+					frame.remove(label);
+					frame.add(choices);
+					frame.repaint();
+					frame.revalidate();
+					while(noanswerchosen){}
+					System.out.println("answer chosen");
 					noanswerchosen=true;
-					osw.write(answer);
+					osw.write(answer+(char)13);
 					osw.flush();
 					answer="";
 				}
+				instr.delete(0, instr.length());
 			}
 			/** Close the socket connection. */
 			connection.close();
-			System.out.println(instr);
+			//System.out.println(instr);
 		}
 		catch (IOException f) {
 			System.out.println("IOException: " + f);

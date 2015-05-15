@@ -5,22 +5,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 public class MultipleSocketServer implements Runnable {
-	private static ArrayList<user>users=new ArrayList<user>();
-	private static HashMap<Socket,user>hm=new HashMap<Socket,user>();
+	private static volatile ArrayList<user>users=new ArrayList<user>();
+	private static volatile HashMap<Socket,user>hm=new HashMap<Socket,user>();
 	private Socket connection;
 	private String TimeStamp;
 	private int ID;
-	private static boolean game=true;
-	private static boolean waitingforgametostart=true;
-	private static boolean accepting=false;
-	private static long starttime;
+	private static volatile boolean game=true;
+	private static volatile boolean waitingforgametostart=true;
+	private static volatile boolean accepting=false;
+	private static volatile long starttime;
+	private static volatile long endtime;
 	private InputStreamReader isr;
 	private static JButton finq=new JButton("See Results");
 	private static JPanel results;
 	public static void main(String[]args)
 	{
 		JFrame frame=new JFrame();
-		frame.setSize(100,100);
+		frame.setSize(200,200);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JButton start=new JButton("Start Game");
 		start.addActionListener(new ActionListener(){
@@ -46,11 +47,42 @@ public class MultipleSocketServer implements Runnable {
 				starttime=System.currentTimeMillis();
 			}
 		});
+		JButton next=new JButton("Next Question");
+		next.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				frame.remove(next);
+				for(user u:users)
+				{
+					try{
+						accepting=true;
+						String returnCode = "start" + (char) 13;
+						BufferedOutputStream os = new BufferedOutputStream(u.getSocket().getOutputStream());
+						OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
+						osw.write(returnCode);
+						osw.flush();
+					}
+					catch (Exception e) {
+						System.out.println(e);
+					}
+				}
+				waitingforgametostart=false;
+				frame.add(finq);
+				frame.repaint();
+				frame.revalidate();
+				starttime=System.currentTimeMillis();
+			}
+		});
 		finq.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				accepting=false;
+				endtime=System.currentTimeMillis();
 				frame.remove(finq);
-				frame.add(start);
+				
+				
+				
+				
+				
+				frame.add(next);
 				frame.revalidate();
 				frame.repaint();
 			}
