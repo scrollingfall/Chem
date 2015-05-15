@@ -13,7 +13,7 @@ public class SocketClient {
 	private JPanel login=new JPanel();
 	private JTextField username=new JTextField();
 	private JButton submituser=new JButton("Connect!");
-	private boolean cansubmit=false;
+	private volatile boolean cansubmit=false;
 	private boolean cont=true;
 	private String user="";
 	private String answer="";
