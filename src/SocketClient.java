@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-
+import java.util.*;
 import javax.swing.*;
 
 import java.awt.event.*;
@@ -160,7 +160,19 @@ public class SocketClient {
 					frame.add(choices);
 					frame.repaint();
 					frame.revalidate();
-					while(noanswerchosen){}//System.out.print("");}
+					//Scanner s=new Scanner(bis);
+					//Thread t=new Thread(new Runnable(){
+					//		public void run()
+					//		{
+					//			while (!s.hasNext()) {}
+					//			String input = s.nextLine();
+					//			System.out.println(input);
+					//		}
+					//	});
+					//	t.start();
+					while(noanswerchosen){
+						
+					}//System.out.print("");}
 					System.out.println("answer chosen");
 					noanswerchosen=true;
 					osw.write(answer+(char)13);
