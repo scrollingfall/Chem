@@ -25,7 +25,7 @@ public class SocketClient {
 	private JButton d=new JButton("D");
 	private OutputStreamWriter osw;
 	private InputStreamReader isr;
-	private boolean noanswerchosen=true;
+	private volatile boolean noanswerchosen=true;
 	public void gui()
 	{
 		frame.setSize(400,100);
@@ -144,11 +144,11 @@ public class SocketClient {
 				/**Read the socket's InputStream and append to a StringBuffer */
 				isr = new InputStreamReader(bis, "US-ASCII");
 				StringBuffer instr = new StringBuffer();
-				int c;
+				int c=0;
 				System.out.println("Waiting for server instructions");
 				while ( (c = isr.read()) != 13)
 					instr.append( (char) c);
-				c=0;
+				//while((c=isr.read())!=-1){};
 				System.out.println("Server instruction recieved");
 				if(instr.toString().equals("endgame"))
 					cont=false;
@@ -159,7 +159,7 @@ public class SocketClient {
 					frame.add(choices);
 					frame.repaint();
 					frame.revalidate();
-					while(noanswerchosen){}
+					while(noanswerchosen){}//System.out.print("");}
 					System.out.println("answer chosen");
 					noanswerchosen=true;
 					osw.write(answer+(char)13);

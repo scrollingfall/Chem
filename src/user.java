@@ -1,6 +1,7 @@
 import java.io.*;
+import java.util.*;
 import java.net.*;
-public class user {
+public class user implements Comparable<user>{
 	private String username;
 	private Socket socket;
 	private long submittime;
@@ -42,5 +43,13 @@ public class user {
 	}
 	public Socket getSocket() {
 		return socket;
+	}
+	public int compare(user o1, user o2) {
+		return new Integer(o1.getScore()).compareTo(new Integer(o2.getScore()));
+	}
+	@Override
+	public int compareTo(user o) {
+		// TODO Auto-generated method stub
+		return new Integer(this.getScore()).compareTo(new Integer(o.getScore()));
 	}
 }
