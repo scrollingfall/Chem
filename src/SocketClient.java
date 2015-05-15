@@ -105,7 +105,8 @@ public class SocketClient {
 	}
 	public void network(){
 		/** Define a host server */
-		String host = "localhost";
+		//String host = "localhost";
+		String host="1589S22";
 		/** Define a port */
 		int port = 19999;
 		
