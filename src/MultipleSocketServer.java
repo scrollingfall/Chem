@@ -36,6 +36,7 @@ public class MultipleSocketServer implements Runnable {
 		start.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				frame.remove(start);
+				accepting=true; 
 				for(user u:users)
 				{
 					try{
@@ -115,12 +116,29 @@ public class MultipleSocketServer implements Runnable {
 	public static void createresults()
 	{
 		String correct=qs.get(currentq).getCorrectanswer();
+		int a=0;
+		int b=0;
+		int c=0;
+		int d=0;
+		int e=0;
 		for(user u:users)
 		{
 			if(u.getAnswer().equals(correct))
 			{
 				u.addScore(100-(int)((u.getTime()-starttime)/((endtime-starttime)/100)) );
 			}
+			switch (u.getAnswer()){
+			case "A":a++;
+			break;
+			case "B":b++;
+			break;
+			case "C":c++;
+			break;
+			case "D":d++;
+			break;
+			default: e++;
+			}
+			u.setAnswer("E");
 		}
 		Collections.sort(users);
 	}
@@ -156,6 +174,7 @@ public class MultipleSocketServer implements Runnable {
 			}
 			catch (Exception e) {
 				System.out.println(e);
+				return;
 				//System.exit(0);
 			}
 		}
@@ -185,6 +204,7 @@ public class MultipleSocketServer implements Runnable {
 				}
 				catch (Exception e) {
 					System.out.println(e);
+					return;
 				}
 			}
 			else if(!accepting)
