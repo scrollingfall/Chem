@@ -15,7 +15,7 @@ public class MultipleSocketServer implements Runnable {
 	private static volatile boolean game=true;
 	private static volatile boolean waitingforgametostart=true;
 	private static volatile boolean accepting=false;
-	private boolean accepting2=true;
+	private volatile boolean accepting2=true;
 	private static volatile long starttime;
 	private static volatile long endtime;
 	private InputStreamReader isr;
@@ -23,7 +23,7 @@ public class MultipleSocketServer implements Runnable {
 	private static JPanel results=new JPanel();
 	private static void initQ()
 	{
-		
+
 	}
 	public static void main(String[]args)
 	{
@@ -88,6 +88,20 @@ public class MultipleSocketServer implements Runnable {
 			public void actionPerformed(ActionEvent arg0){
 				accepting=false;
 				endtime=System.currentTimeMillis();
+				for(user u: users)
+				{
+					try{
+						accepting=true;
+						String returnCode = "endq" + (char) 13;
+						BufferedOutputStream os = new BufferedOutputStream(u.getSocket().getOutputStream());
+						OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
+						osw.write(returnCode);
+						osw.flush();
+					}
+					catch (Exception e) {
+						System.out.println(e);
+					}
+				}
 				frame.remove(finq);
 				//createresults();
 				frame.add(results);
@@ -149,46 +163,38 @@ public class MultipleSocketServer implements Runnable {
 	}
 	public void run() {
 		//while(waitingforgametostart)
-		{
-			try {
-				BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
-				isr = new InputStreamReader(is);
-				int character;
-				StringBuffer process = new StringBuffer();
-				while((character = isr.read()) != 13) {
+
+		try {
+			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
+			isr = new InputStreamReader(is);
+			int character;
+			StringBuffer process = new StringBuffer();
+			while((character = isr.read()) != 13) {
 				//System.out.println(character);
-					process.append((char)character);
-				}
-				user u=new user(process.toString(),connection);
-				users.add(u);
-				hm.put(connection, u);
-				System.out.println(process);
-				/*
+				process.append((char)character);
+			}
+			user u=new user(process.toString(),connection);
+			users.add(u);
+			hm.put(connection, u);
+			System.out.println(process);
+			/*
 			TimeStamp = new java.util.Date().toString();
 			String returnCode = "MultipleSocketServer repsonded at "+ TimeStamp + (char) 13;
 			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 			osw.write(returnCode);
 			osw.flush();
-				 */
-			}
-			catch (Exception e) {
-				System.out.println(e);
-				return;
-				//System.exit(0);
-			}
-		}
-		while(game)
-		{
-			if(accepting&&accepting2)
+			 */
+			while(game)
 			{
-				try {
-					int character;
-					StringBuffer process = new StringBuffer();
+				if(accepting&&accepting2)
+				{
+					character=0;
+					process = new StringBuffer();
 					while((character = isr.read()) != 13) {
 						process.append((char)character);
 					}
-					user u=hm.get(connection);
+					//user u=hm.get(connection);
 					u.setTime(System.currentTimeMillis());
 					u.setAnswer(process.toString());
 					System.out.println(u.getUsername()+" "+process.toString());
@@ -202,17 +208,14 @@ public class MultipleSocketServer implements Runnable {
 				osw.flush();
 					 */
 				}
-				catch (Exception e) {
-					System.out.println(e);
-					return;
-				}
-			}
-			else if(!accepting)
+				else if(!accepting)
 				accepting2=true;
-		}
-		try {
+			}
 			connection.close();
 		}
-		catch (IOException e){}
+		catch (Exception e){
+			System.out.println(e);
+			return;
+		}
 	}
 }
