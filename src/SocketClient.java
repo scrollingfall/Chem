@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.*;
+
 import javax.swing.*;
 
 import java.awt.event.*;
@@ -25,7 +26,9 @@ public class SocketClient {
 	private JButton d=new JButton("D");
 	private OutputStreamWriter osw;
 	private InputStreamReader isr;
+	private volatile String input="";
 	private volatile boolean noanswerchosen=true;
+	private volatile boolean temp1=true;
 	public void gui()
 	{
 		frame.setSize(400,100);
@@ -105,11 +108,11 @@ public class SocketClient {
 	}
 	public void network(){
 		/** Define a host server */
-		//String host = "localhost";
-		String host="1589S22";
+		String host = "localhost";
+		//String host="1589S22";
 		/** Define a port */
 		int port = 19999;
-		
+
 		String TimeStamp;
 		System.out.println("SocketClient initialized");
 		try {
@@ -139,21 +142,44 @@ public class SocketClient {
 			/**Instantiate an InputStreamReader with the optional
 			 * character encoding.
 			 */
-			
+			isr=new InputStreamReader(bis,"US-ASCII");
+			Thread t=new Thread(new Runnable(){
+				public void run()
+				{
+					try {
+						while(true)
+						{
+							StringBuffer instr=new StringBuffer();
+							int c=0;
+							while((c=isr.read())!=13)
+								instr.append((char)c);
+							input=instr.toString();
+						}
+					} catch (IOException e) {
+						System.out.println(e);
+						return;
+					}
+				}
+			});
+			t.start();
 			while(cont)
 			{
 				/**Read the socket's InputStream and append to a StringBuffer */
-				isr = new InputStreamReader(bis, "US-ASCII");
-				StringBuffer instr = new StringBuffer();
-				int c=0;
-				System.out.println("Waiting for server instructions");
-				while ( (c = isr.read()) != 13)
-					instr.append( (char) c);
+				//isr = new InputStreamReader(bis, "US-ASCII");
+				//StringBuffer instr = new StringBuffer();
+				//int c=0;
+				//System.out.println("Waiting for server instructions");
+				//while ( (c = isr.read()) != 13)
+				//	instr.append( (char) c);
 				//while((c=isr.read())!=-1){};
+				while(input.equals("")){} //waits for instruction
 				System.out.println("Server instruction recieved");
-				if(instr.toString().equals("endgame"))
+				if(input.equals("endgame"))
+				{
+					input="";
 					cont=false;
-				else if(instr.toString().equals("start"))
+				}
+				else if(input.toString().equals("start"))
 				{
 					System.out.println("waiting to submit answer");
 					frame.remove(label);
@@ -171,25 +197,50 @@ public class SocketClient {
 					//	});
 					//	t.start();
 					while(noanswerchosen){
-						
+						if(input.equals("endq"))
+						{
+							frame.remove(choices);
+							label.setText("You didn't choose an answer.");
+							frame.add(label);
+							frame.revalidate();
+							frame.repaint();
+							System.out.println("no ");
+							temp1=false;
+							noanswerchosen=false;
+						}
 					}//System.out.print("");}
 					System.out.println("answer chosen");
-					noanswerchosen=true;
-					osw.write(answer+(char)13);
-					osw.flush();
-					answer="";
+					if(!temp1)
+					{
+						noanswerchosen=true;
+						temp1=true;
+						osw.write("E"+(char)13);
+						osw.flush();
+					}
+					else
+					{
+						noanswerchosen=true;
+						osw.write(answer+(char)13);
+						osw.flush();
+						answer="";
+					}
 				}
-				instr.delete(0, instr.length());
+				else
+				{
+
+				}
+				//instr.delete(0, instr.length());
 			}
 			/** Close the socket connection. */
 			connection.close();
 			//System.out.println(instr);
 		}
-		catch (IOException f) {
-			System.out.println("IOException: " + f);
-		}
+		//catch (IOException f) {
+		//	System.out.println("IOException: " + f);
+		//}
 		catch (Exception g) {
 			System.out.println("Exception: " + g);
+			System.exit(0);
 		}
 	}
 }
