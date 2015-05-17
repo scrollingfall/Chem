@@ -33,9 +33,10 @@ public class SocketClient {
 	{
 		frame.setSize(400,100);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBackground(Color.WHITE);
 		submituser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				if(username.getText().length()!=0)
+				if(username.getText().length()!=0&&username.getText().length()<=20)
 				{
 					username.setEditable(false);
 					user=username.getText();
@@ -44,6 +45,11 @@ public class SocketClient {
 					cansubmit=true;
 					frame.repaint();
 					frame.revalidate();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(frame, "Invalid Username: Usernames must contain at least \none character and no more than 20 characters");
+					username.setText("");
 				}
 			}
 		});
@@ -174,15 +180,17 @@ public class SocketClient {
 				//while((c=isr.read())!=-1){};
 				while(input.equals("")){} //waits for instruction
 				System.out.println("Server instruction recieved");
-				if(input.equals("endgame"))
+				if(input.equals("game"))
 				{
 					input="";
 					cont=false;
 				}
 				else if(input.toString().equals("start"))
 				{
+					input="";
 					System.out.println("waiting to submit answer");
 					frame.remove(label);
+					label.setText("Waiting");
 					frame.add(choices);
 					frame.repaint();
 					frame.revalidate();
@@ -225,9 +233,9 @@ public class SocketClient {
 						answer="";
 					}
 				}
-				else
+				else if(input.substring(0,3).equals("sco"))
 				{
-
+					label.setText("Your current score is "+input.split(" ")[1]);
 				}
 				//instr.delete(0, instr.length());
 			}

@@ -1,0 +1,16 @@
+2
+What color is the white house?
+true
+whitehouse_historypg.jpg
+White
+Blue
+Green
+Orange
+A
+What color is the blue house?
+false
+White
+Blue
+Green
+Pink
+B
