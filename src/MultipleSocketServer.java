@@ -811,6 +811,8 @@ public class MultipleSocketServer implements Runnable {
 		try{
 			ServerSocket socket1 = new ServerSocket(port);
 			System.out.println("MultipleSocketServer Initialized");
+			//System.out.println("Hostname: "+socket1.getInetAddress().getHostName());
+			System.out.println("Hostname: "+InetAddress.getLocalHost().getHostName());
 			while (true) {
 				Socket connection = socket1.accept();
 				Runnable runnable = new MultipleSocketServer(connection, ++count);
