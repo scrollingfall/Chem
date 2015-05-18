@@ -45,7 +45,7 @@ public class user implements Comparable<user>{
 		return socket;
 	}
 	public int compare(user o1, user o2) {
-		return new Integer(o1.getScore()).compareTo(new Integer(o2.getScore()));
+		return -1*(new Integer(o1.getScore()).compareTo(new Integer(o2.getScore())));
 	}
 	@Override
 	public int compareTo(user o) {

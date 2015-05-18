@@ -12,6 +12,7 @@ public class SocketClient {
 	}
 	private JFrame frame=new JFrame();
 	private JPanel login=new JPanel();
+	private JTextField hostname=new JTextField();
 	private JTextField username=new JTextField();
 	private JButton submituser=new JButton("Connect!");
 	private volatile boolean cansubmit=false;
@@ -29,9 +30,14 @@ public class SocketClient {
 	private volatile String input="";
 	private volatile boolean noanswerchosen=true;
 	private volatile boolean temp1=true;
+	private volatile boolean invalidhostname=true;
+	private volatile String host="";
+	private volatile Socket connection;
+	private volatile int port=19999;
 	public void gui()
 	{
-		frame.setSize(400,100);
+		frame.setSize(400,200);
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBackground(Color.WHITE);
 		submituser.addActionListener(new ActionListener(){
@@ -45,6 +51,22 @@ public class SocketClient {
 					cansubmit=true;
 					frame.repaint();
 					frame.revalidate();
+					try
+					{
+						host=hostname.getText();
+						InetAddress address = InetAddress.getByName(host);
+						/** Establish a socket connection */
+						connection = new Socket(address, port);
+						System.out.println("Socket Created, waiting to submit username");
+						invalidhostname=false;
+					}
+					catch (Exception e2)
+					{
+						System.out.println(e2);
+						invalidhostname=true;
+						JOptionPane.showMessageDialog(frame,"Invalid Host Name: Please Try Again");
+						cansubmit=false;
+					}
 				}
 				else
 				{
@@ -53,9 +75,54 @@ public class SocketClient {
 				}
 			}
 		});
-		login.setLayout(new GridLayout(2,1));
-		login.add(username);
-		login.add(submituser);
+		login.setLayout(new GridBagLayout());
+		JLabel hnl=new JLabel("Host Name:");
+		GridBagConstraints constraints=new GridBagConstraints();
+		constraints.gridx=0;
+		constraints.gridy=0;
+		constraints.gridheight=1;
+		constraints.gridwidth=1;
+		constraints.fill=GridBagConstraints.BOTH;
+		constraints.weightx=0.25;
+		constraints.weighty=0.33;
+		login.add(hnl,constraints);
+		JLabel unl=new JLabel("Username:");
+		constraints=new GridBagConstraints();
+		constraints.gridx=0;
+		constraints.gridy=1;
+		constraints.gridheight=1;
+		constraints.gridwidth=1;
+		constraints.fill=GridBagConstraints.BOTH;
+		constraints.weightx=0.25;
+		constraints.weighty=0.33;
+		login.add(unl,constraints);
+		constraints=new GridBagConstraints();
+		constraints.gridx=1;
+		constraints.gridy=0;
+		constraints.gridheight=1;
+		constraints.gridwidth=1;
+		constraints.fill=GridBagConstraints.BOTH;
+		constraints.weightx=0.75;
+		constraints.weighty=0.33;
+		login.add(hostname,constraints);
+		constraints=new GridBagConstraints();
+		constraints.gridx=1;
+		constraints.gridy=1;
+		constraints.gridheight=1;
+		constraints.gridwidth=1;
+		constraints.fill=GridBagConstraints.BOTH;
+		constraints.weightx=0.75;
+		constraints.weighty=0.33;
+		login.add(username,constraints);
+		constraints=new GridBagConstraints();
+		constraints.gridx=0;
+		constraints.gridy=2;
+		constraints.gridheight=1;
+		constraints.gridwidth=2;
+		constraints.fill=GridBagConstraints.BOTH;
+		constraints.weightx=1;
+		constraints.weighty=0.33;
+		login.add(submituser,constraints);
 		frame.add(login);
 		choices.setLayout(new GridLayout(1,4));
 		a.addActionListener(new ActionListener(){
@@ -114,18 +181,18 @@ public class SocketClient {
 	}
 	public void network(){
 		/** Define a host server */
-		String host = "localhost";
-		//String host="1589S22";
+		//host = "localhost";
+		//host="1589S22";
 		/** Define a port */
-		int port = 19999;
-
+		//int port = 19999;
+		while(invalidhostname){}
 		String TimeStamp;
 		System.out.println("SocketClient initialized");
 		try {
 			/** Obtain an address object of the server */
 			InetAddress address = InetAddress.getByName(host);
 			/** Establish a socket connection */
-			Socket connection = new Socket(address, port);
+			connection = new Socket(address, port);
 			System.out.println("Socket Created, waiting to submit username");
 			while(!cansubmit){}
 			/** Instantiate a BufferedOutputStream object */
@@ -207,6 +274,7 @@ public class SocketClient {
 					while(noanswerchosen){
 						if(input.equals("endq"))
 						{
+							input="";
 							frame.remove(choices);
 							label.setText("You didn't choose an answer.");
 							frame.add(label);
@@ -236,6 +304,7 @@ public class SocketClient {
 				else if(input.substring(0,3).equals("sco"))
 				{
 					label.setText("Your current score is "+input.split(" ")[1]);
+					input="";
 				}
 				//instr.delete(0, instr.length());
 			}

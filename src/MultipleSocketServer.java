@@ -56,6 +56,7 @@ public class MultipleSocketServer implements Runnable {
 	private static JPanel qqpanel=new JPanel();
 	private static JLabel correctansis,numa,numb,numc,numd,nume;
 	private static ArrayList<JLabel>labels;
+	private static volatile boolean acceptingnewconnections=true;
 	public static void main(String[]args)
 	{
 		initQ();
@@ -70,12 +71,12 @@ public class MultipleSocketServer implements Runnable {
 		c.weightx=0.2;
 		c.weighty=0.2;
 		qpanel.add(finq,c);
-		
+
 
 		results.setLayout(new GridBagLayout());
 		results.setBackground(Color.WHITE);
-		
-		
+
+
 		/*/
 		c=new GridBagConstraints();
 		leftside=new JPanel();
@@ -170,7 +171,7 @@ public class MultipleSocketServer implements Runnable {
 		c.weightx=0.5;
 		c.weighty=0.1;
 		results.add(nume,c);
-		
+
 		c=new GridBagConstraints();
 		scoreboard=new JLabel("High Scores");
 		scoreboard.setHorizontalAlignment(JLabel.CENTER);
@@ -599,9 +600,17 @@ public class MultipleSocketServer implements Runnable {
 				}
 			}
 		});
-		JButton start=new JButton("Start Game");
+		JButton start=new JButton();
+		try {
+			start.setText("<html><center>Host Name: "+InetAddress.getLocalHost().getHostName()+"<br><br><br>Click To Start Game</center></html>");
+		} catch (Exception e1) {
+			System.out.println(e1);
+			System.exit(0);
+		}
+		start.setFont(new Font("Times New Roman",Font.PLAIN,96));
 		start.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
+				acceptingnewconnections=false;
 				frame.remove(start);
 				Question q=qs.get(0);
 				qqpanel=new JPanel();
@@ -760,7 +769,7 @@ public class MultipleSocketServer implements Runnable {
 				}
 				waitingforgametostart=false;
 				//implement creating the question screen
-				
+
 			}
 		});
 		//results.add(next);
@@ -813,7 +822,7 @@ public class MultipleSocketServer implements Runnable {
 			System.out.println("MultipleSocketServer Initialized");
 			//System.out.println("Hostname: "+socket1.getInetAddress().getHostName());
 			System.out.println("Hostname: "+InetAddress.getLocalHost().getHostName());
-			while (true) {
+			while (acceptingnewconnections) {
 				Socket connection = socket1.accept();
 				Runnable runnable = new MultipleSocketServer(connection, ++count);
 				Thread thread = new Thread(runnable);
@@ -822,30 +831,30 @@ public class MultipleSocketServer implements Runnable {
 		}
 		catch (Exception e) {
 			System.out.println(e);
-			}
+		}
 	}
 	public static int getMaxFittingFontSize(Graphics g, Font font, String string, int width, int height){
-	    int minSize = 0;
-	    int maxSize = 288;
-	    int curSize = font.getSize();
+		int minSize = 0;
+		int maxSize = 288;
+		int curSize = font.getSize();
 
-	    while (maxSize - minSize > 2){
-	      FontMetrics fm = g.getFontMetrics(new Font(font.getName(), font.getStyle(), curSize));
-	      int fontWidth = fm.stringWidth(string);
-	      int fontHeight = fm.getLeading() + fm.getMaxAscent() + fm.getMaxDescent();
+		while (maxSize - minSize > 2){
+			FontMetrics fm = g.getFontMetrics(new Font(font.getName(), font.getStyle(), curSize));
+			int fontWidth = fm.stringWidth(string);
+			int fontHeight = fm.getLeading() + fm.getMaxAscent() + fm.getMaxDescent();
 
-	      if ((fontWidth > width) || (fontHeight > height)){
-	        maxSize = curSize;
-	        curSize = (maxSize + minSize) / 2;
-	      }
-	      else{
-	        minSize = curSize;
-	        curSize = (minSize + maxSize) / 2;
-	      }
-	    }
+			if ((fontWidth > width) || (fontHeight > height)){
+				maxSize = curSize;
+				curSize = (maxSize + minSize) / 2;
+			}
+			else{
+				minSize = curSize;
+				curSize = (minSize + maxSize) / 2;
+			}
+		}
 
-	    return curSize;
-	  }
+		return curSize;
+	}
 	public static void createresults()
 	{
 		String correct=qs.get(currentq).getCorrectanswer();
@@ -906,60 +915,61 @@ public class MultipleSocketServer implements Runnable {
 		this.ID = i;
 	}
 	public void run() {
-		//while(waitingforgametostart)
-		user u = new user("Default",connection);
-		try {
-			BufferedInputStream is = new BufferedInputStream(connection.getInputStream());
-			isr = new InputStreamReader(is);
-			int character;
-			StringBuffer process = new StringBuffer();
-			while((character = isr.read()) != 13) {
-				//System.out.println(character);
-				process.append((char)character);
-			}
-			u=new user(process.toString(),connection);
-			users.add(u);
-			hm.put(connection, u);
-			System.out.println(process);
-			/*
-			TimeStamp = new java.util.Date().toString();
-			String returnCode = "MultipleSocketServer repsonded at "+ TimeStamp + (char) 13;
-			BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
-			OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
-			osw.write(returnCode);
-			osw.flush();
-			 */
-			while(game)
-			{
-				if(accepting&&accepting2)
-				{
-					character=0;
-					process = new StringBuffer();
-					while((character = isr.read()) != 13) {
-						process.append((char)character);
-					}
-					//user u=hm.get(connection);
-					u.setTime(System.currentTimeMillis());
-					u.setAnswer(process.toString());
-					System.out.println(u.getUsername()+" "+process.toString());
-					accepting2=false;
-					/*
+		if (acceptingnewconnections) {
+			//while(waitingforgametostart)
+			user u = new user("Default", connection);
+			try {
+				BufferedInputStream is = new BufferedInputStream(
+						connection.getInputStream());
+				isr = new InputStreamReader(is);
+				int character;
+				StringBuffer process = new StringBuffer();
+				while ((character = isr.read()) != 13) {
+					//System.out.println(character);
+					process.append((char) character);
+				}
+				u = new user(process.toString(), connection);
+				users.add(u);
+				hm.put(connection, u);
+				System.out.println(process);
+				/*
 				TimeStamp = new java.util.Date().toString();
 				String returnCode = "MultipleSocketServer repsonded at "+ TimeStamp + (char) 13;
 				BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
 				OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 				osw.write(returnCode);
 				osw.flush();
-					 */
+				 */
+				while (game) {
+					if (accepting && accepting2) {
+						character = 0;
+						process = new StringBuffer();
+						while ((character = isr.read()) != 13) {
+							process.append((char) character);
+						}
+						//user u=hm.get(connection);
+						u.setTime(System.currentTimeMillis());
+						u.setAnswer(process.toString());
+						System.out.println(u.getUsername() + " "
+								+ process.toString());
+						accepting2 = false;
+						/*
+						TimeStamp = new java.util.Date().toString();
+						String returnCode = "MultipleSocketServer repsonded at "+ TimeStamp + (char) 13;
+						BufferedOutputStream os = new BufferedOutputStream(connection.getOutputStream());
+						OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
+						osw.write(returnCode);
+						osw.flush();
+						 */
+					} else if (!accepting)
+						accepting2 = true;
 				}
-				else if(!accepting)
-					accepting2=true;
+				connection.close();
+			} catch (Exception e) {
+				System.out.println(e);
+				users.remove(u);
+				return;
 			}
-			connection.close();
-		}
-		catch (Exception e){
-			System.out.println(e);
-			users.remove(u);
 			return;
 		}
 	}
