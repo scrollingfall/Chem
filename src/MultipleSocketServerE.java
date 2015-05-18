@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-public class MultipleSocketServer implements Runnable {
+public class MultipleSocketServerE implements Runnable {
 	private static volatile ArrayList<user>users=new ArrayList<user>();
 	private static ArrayList<Question>qs=new ArrayList<Question>();
 	private static int currentq=0;
@@ -835,7 +835,7 @@ public class MultipleSocketServer implements Runnable {
 			System.out.println("Hostname: "+InetAddress.getLocalHost().getHostName());
 			while (acceptingnewconnections) {
 				Socket connection = socket1.accept();
-				Runnable runnable = new MultipleSocketServer(connection, ++count);
+				Runnable runnable = new MultipleSocketServerE(connection, ++count);
 				Thread thread = new Thread(runnable);
 				thread.start();
 			}
@@ -874,6 +874,7 @@ public class MultipleSocketServer implements Runnable {
 		int c=0;
 		int d=0;
 		int e=0;
+		int f=0;
 		for(user u:users)
 		{
 			if(u.getAnswer().equals(correct))
@@ -889,9 +890,10 @@ public class MultipleSocketServer implements Runnable {
 			break;
 			case "D":d++;
 			break;
-			default: e++;
+			case "E":e++;
+			default: f++;
 			}
-			u.setAnswer("E");
+			u.setAnswer("F");
 		}
 		Collections.sort(users);
 		if(a!=1)
@@ -911,16 +913,16 @@ public class MultipleSocketServer implements Runnable {
 		else
 			numd.setText("1 person chose D");
 		if(e!=1)
-			nume.setText(e+" people didn't answer");
+			nume.setText(e+" people chose E");
 		else
-			nume.setText("1 person didn't answer");
+			nume.setText("1 person chose E");
 		for(int i=0;i<users.size()&&i<10;i++)
 		{
 			labels.get(i+13).setText(users.get(i).getUsername());
 			labels.get(i+23).setText(""+users.get(i).getScore());
 		}
 	}
-	public MultipleSocketServer(Socket s, int i) 
+	public MultipleSocketServerE(Socket s, int i) 
 	{
 		this.connection = s;
 		this.ID = i;

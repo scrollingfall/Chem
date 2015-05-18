@@ -12,7 +12,7 @@ public class user implements Comparable<user>{
 		username=user;
 		socket=s;
 		score=0;
-		answer="E";
+		answer="F";
 	}
 	public String getAnswer()
 	{
@@ -50,6 +50,6 @@ public class user implements Comparable<user>{
 	@Override
 	public int compareTo(user o) {
 		// TODO Auto-generated method stub
-		return new Integer(this.getScore()).compareTo(new Integer(o.getScore()));
+		return -1*new Integer(this.getScore()).compareTo(new Integer(o.getScore()));
 	}
 }
