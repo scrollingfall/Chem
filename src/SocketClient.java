@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-import java.util.*;
+//import java.util.*;
 
 import javax.swing.*;
 
@@ -36,6 +36,7 @@ public class SocketClient {
 	private volatile int port=19999;
 	public void gui()
 	{
+		label.setHorizontalAlignment(JLabel.CENTER);
 		frame.setSize(400,200);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -187,7 +188,7 @@ public class SocketClient {
 		/** Define a port */
 		//int port = 19999;
 		while(invalidhostname){}
-		String TimeStamp;
+		//String TimeStamp;
 		System.out.println("SocketClient initialized");
 		try {
 			/** Obtain an address object of the server */
