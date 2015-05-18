@@ -40,17 +40,12 @@ public class SocketClient {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBackground(Color.WHITE);
+		username.setBackground(Color.WHITE);
 		submituser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				if(username.getText().length()!=0&&username.getText().length()<=20)
 				{
-					username.setEditable(false);
 					user=username.getText();
-					frame.remove(login);
-					frame.add(label);
-					cansubmit=true;
-					frame.repaint();
-					frame.revalidate();
 					try
 					{
 						host=hostname.getText();
@@ -58,7 +53,13 @@ public class SocketClient {
 						/** Establish a socket connection */
 						connection = new Socket(address, port);
 						System.out.println("Socket Created, waiting to submit username");
+						username.setEditable(false);
 						invalidhostname=false;
+						frame.remove(login);
+						frame.add(label);
+						cansubmit=true;
+						frame.repaint();
+						frame.revalidate();
 					}
 					catch (Exception e2)
 					{
@@ -306,10 +307,16 @@ public class SocketClient {
 					label.setText("Your current score is "+input.split(" ")[1]);
 					input="";
 				}
+				else if(input.equals("endq"))
+				{
+					input="";
+				}
 				//instr.delete(0, instr.length());
 			}
 			/** Close the socket connection. */
 			connection.close();
+			System.out.println("Reached exit point");
+			System.exit(0);
 			//System.out.println(instr);
 		}
 		//catch (IOException f) {

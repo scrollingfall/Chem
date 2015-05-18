@@ -12,10 +12,10 @@ public class MultipleSocketServer implements Runnable {
 	private static int currentq=0;
 	private static volatile HashMap<Socket,user>hm=new HashMap<Socket,user>();
 	private Socket connection;
-	private String TimeStamp;
+	//private String TimeStamp;
 	private int ID;
 	private static volatile boolean game=true;
-	private static volatile boolean waitingforgametostart=true;
+	//private static volatile boolean waitingforgametostart=true;
 	private static volatile boolean accepting=false;
 	private volatile boolean accepting2=true;
 	private static volatile long starttime;
@@ -23,6 +23,7 @@ public class MultipleSocketServer implements Runnable {
 	private InputStreamReader isr;
 	private static JButton finq=new JButton("See Results");
 	private static JPanel results=new JPanel();
+	private static ServerSocket socket1;
 	private static void initQ()
 	{
 		try {
@@ -46,12 +47,13 @@ public class MultipleSocketServer implements Runnable {
 				else
 					qs.add(new Question(q,anss,ca));
 			}
+			scan.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 	}
 	private static JLabel scoreboard, rank, name,score,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s1n,s2n,s3n,s4n,s5n,s6n,s7n,s8n,s9n,s10n,s1s,s2s,s3s,s4s,s5s,s6s,s7s,s8s,s9s,s10s;
-	private static JPanel leftside;
+	//private static JPanel leftside;
 	private static JPanel qpanel=new JPanel();
 	private static JPanel qqpanel=new JPanel();
 	private static JLabel correctansis,numa,numb,numc,numd,nume;
@@ -591,6 +593,7 @@ public class MultipleSocketServer implements Runnable {
 							OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 							osw.write(returnCode);
 							osw.flush();
+							socket1.close();
 						}
 						catch (Exception e1) {
 							System.out.println(e1);
@@ -611,6 +614,12 @@ public class MultipleSocketServer implements Runnable {
 		start.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				acceptingnewconnections=false;
+				try {
+					Socket temporaryconnection=new Socket("localhost", 19999);
+					temporaryconnection.close();
+				} catch (Exception e1) {
+					System.out.println("fake client attempted to end .accept() method: "+e1);
+				}
 				frame.remove(start);
 				Question q=qs.get(0);
 				qqpanel=new JPanel();
@@ -673,7 +682,7 @@ public class MultipleSocketServer implements Runnable {
 						System.out.println(e);
 					}
 				}
-				waitingforgametostart=false;
+				//waitingforgametostart=false;
 
 			}
 		});
@@ -692,6 +701,7 @@ public class MultipleSocketServer implements Runnable {
 							OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 							osw.write(returnCode);
 							osw.flush();
+							socket1.close();
 						}
 						catch (Exception e) {
 							System.out.println(e);
@@ -767,7 +777,7 @@ public class MultipleSocketServer implements Runnable {
 						System.out.println(e);
 					}
 				}
-				waitingforgametostart=false;
+				//waitingforgametostart=false;
 				//implement creating the question screen
 
 			}
@@ -785,6 +795,7 @@ public class MultipleSocketServer implements Runnable {
 						OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 						osw.write(returnCode);
 						osw.flush();
+						//socket1.close();
 					}
 					catch (Exception e) {
 						System.out.println(e);
@@ -818,7 +829,7 @@ public class MultipleSocketServer implements Runnable {
 		int port = 19999;
 		int count = 0;
 		try{
-			ServerSocket socket1 = new ServerSocket(port);
+			socket1 = new ServerSocket(port);
 			System.out.println("MultipleSocketServer Initialized");
 			//System.out.println("Hostname: "+socket1.getInetAddress().getHostName());
 			System.out.println("Hostname: "+InetAddress.getLocalHost().getHostName());
@@ -830,7 +841,7 @@ public class MultipleSocketServer implements Runnable {
 			}
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 	public static int getMaxFittingFontSize(Graphics g, Font font, String string, int width, int height){
@@ -966,7 +977,7 @@ public class MultipleSocketServer implements Runnable {
 				}
 				connection.close();
 			} catch (Exception e) {
-				System.out.println(e);
+				System.out.println("Client "+ID+" generated "+e);
 				users.remove(u);
 				return;
 			}
