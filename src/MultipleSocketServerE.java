@@ -637,7 +637,7 @@ public class MultipleSocketServerE implements Runnable {
 					qqpanel.setLayout(new GridLayout(1,2));
 					JTextArea ta=new JTextArea();
 					ta.setEditable(false);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,42));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
 					ta.append(q.getQuestion()+"\n\n");
@@ -655,7 +655,7 @@ public class MultipleSocketServerE implements Runnable {
 					ta.setEditable(false);
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,42));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
 					ta.append(q.getQuestion()+"\n\n");
 					ArrayList<String>temp=q.getAnswers();
 					for(int i=0;i<temp.size();i++)
@@ -710,6 +710,7 @@ public class MultipleSocketServerE implements Runnable {
 					System.exit(0);
 				}
 				frame.remove(results);
+				correctansis=new JLabel("The correct answer was "+qs.get(currentq).getCorrectanswer());
 				if(currentq==qs.size()-1)
 				{
 					next.setText("Finish Game");
@@ -732,7 +733,7 @@ public class MultipleSocketServerE implements Runnable {
 					qqpanel.setLayout(new GridLayout(1,2));
 					JTextArea ta=new JTextArea();
 					ta.setEditable(false);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,42));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
 					ta.append(q.getQuestion()+"\n\n");
@@ -750,7 +751,7 @@ public class MultipleSocketServerE implements Runnable {
 					ta.setEditable(false);
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,42));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
 					ta.append(q.getQuestion()+"\n\n");
 					ArrayList<String>temp=q.getAnswers();
 					for(int i=0;i<temp.size();i++)
