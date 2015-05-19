@@ -588,16 +588,36 @@ public class MultipleSocketServer implements Runnable {
 					for(user u:users)
 					{
 						try{
+							String returnCode = "endq" + (char) 13;
+							BufferedOutputStream os = new BufferedOutputStream(u.getSocket().getOutputStream());
+							OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
+							osw.write(returnCode);
+							osw.flush();
+							//socket1.close();
+						}
+						catch (Exception e1) {
+							System.out.println(e1);
+						}
+					}
+					for(user u:users)
+					{
+						try{
 							String returnCode = "game" + (char) 13;
 							BufferedOutputStream os = new BufferedOutputStream(u.getSocket().getOutputStream());
 							OutputStreamWriter osw = new OutputStreamWriter(os, "US-ASCII");
 							osw.write(returnCode);
 							osw.flush();
-							socket1.close();
+							//socket1.close();
 						}
 						catch (Exception e1) {
 							System.out.println(e1);
 						}
+					}
+					try{
+						socket1.close();
+					}
+					catch(Exception e1){
+						System.out.println(e1);
 					}
 					System.exit(0);
 				}
