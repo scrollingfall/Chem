@@ -710,7 +710,7 @@ public class MultipleSocketServer implements Runnable {
 					System.exit(0);
 				}
 				frame.remove(results);
-				correctansis=new JLabel("The correct answer was "+qs.get(currentq).getCorrectanswer());
+				correctansis.setText("The correct answer was "+qs.get(currentq).getCorrectanswer());
 				if(currentq==qs.size()-1)
 				{
 					next.setText("Finish Game");
