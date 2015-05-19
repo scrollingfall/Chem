@@ -1,16 +1,169 @@
-2
-What color is the white house?
-true
-whitehouse_historypg.jpg
-White
-Blue
-Green
-Orange
-A
-What color is the blue house?
+4
+Which of the following has the property of being the most difficult to oxidize in a given period of the periodic table?
 false
-White
-Blue
-Green
-Pink
+Noble gases
+Alkali metals
+Halogens
+Transition elements
+A
+Which of the following has the property of always being radioactive?
+false
+Alkali metals
+Halogens
+Transition elements
+Actinides
+D
+Which of the following has the property of being the most likely to form anions?
+false
+Noble gases
+Alkali metals
+Halogens
+Transition elements
+C
+A solution of a weak monoprotic acid is titrated with a solution of a strong base, KOH. Consider the points labeled (A) through (E) on the titration curve that results, as shown in the picture. Which point is the point at which the moles of the added strong base are equal to the moles of the weak acid initially present?
+notfalse
+B
+C
+D
+E
+B
+A solution of a weak monoprotic acid is titrated with a solution of a strong base, KOH. Consider the points labeled (A) through (E) on the titration curve that results, as shown in the picture. Which point is the point at which the pH is closest to that of the strong base being added?
+notfalse
+B
+C
+D
+E
+D
+A solution of a weak monoprotic acid is titrated with a solution of a strong base, KOH. Consider the points labeled (A) through (E) on the titration curve that results, as shown in the picture. Which point is the point at which the concentrations of the weak acid and its conjugate base are aproximately equal?
+notfalse
+B
+C
+D
+E
+A
+Which of the following has molecules with a pyramidal shape?
+false
+NH3
+BH3
+H2S
+HBr
+A
+Which of the following is a strong electrolyte in aqueous solution?
+false
+NH3
+BH3
+H2S
+HBr
+D
+Which of the following is the slowest to effuse through a small opening at 25C and 1atm
+false
+NH3
+BH3
+H2S
+HBr
+D
+Which of the following quantities would be zero for a pure, perfect crystal at 0K?
+false
+Activation energy
+Entropy
+Gibbs free energy
+Lattice Energy
+B
+Which of the following quantities would typically be determined by measuring the rate of a reaction at two or more different temperatures?
+false
+Activation energy
+Enthalpy of Formation
+Entropy
+Gibbs free energy
+A
+Which of the following combinations of enthalpy changes (dH) and entropy changes (dS) for chemical reactions must be true for a reaction that is spontaneous at all temperatures?
+false
+dH>0, dS>0
+dH>0, dS<0
+dH<0, ds>0
+dH<0, dS<0
+C
+Which of the following combinations of enthalpy changes (dH) and entropy changes (dS) for chemical reactions is true for the evaporation of water at 25C and 1 atm?
+false
+dH>0, dS>0
+dH>0, dS<0
+dH<0, ds>0
+dH<0, dS<0
+A
+Which of the following combinations of enthalpy changes (dH) and entropy changes (dS) for chemical reactions is true for the combustion of liquid pentane, C5H12, to form H2O(g) and CO2(g) at 1 atm?
+false
+dH>0, dS>0
+dH>0, dS<0
+dH<0, ds>0
+dH<0, dS<0
+C
+Which of the following is a precipitation reaction?
+false
+2Mg(s) + O2(gas) -> 2MgO(s)
+Pb(2+)(aq) + CrO4(2-)(aq) -> PbCrO4(s)
+SO3(g) + 2H2O(l) -> H3O(+)(aq) +HSO4(-)(aq)
+Ag(+)(aq) + 2NH3(aq) -> [Ag(NH3)2](+)(aq)
+B
+Which of the following is a Lewis acid-base reaction that produces a coordination complex?
+false
+2Mg(s) + O2(gas) -> 2MgO(s)
+Pb(2+)(aq) + CrO4(2-)(aq) -> PbCrO4(s)
+SO3(g) + 2H2O(l) -> H3O(+)(aq) +HSO4(-)(aq)
+Ag(+)(aq) + 2NH3(aq) -> [Ag(NH3)2](+)(aq)
+D
+Which of the following is an oxidation-reduction reaction that is also a synthesis reaction?
+false
+2Mg(s) + O2(gas) -> 2MgO(s)
+Pb(2+)(aq) + CrO4(2-)(aq) -> PbCrO4(s)
+SO3(g) + 2H2O(l) -> H3O(+)(aq) +HSO4(-)(aq)
+Ag(+)(aq) + 2NH3(aq) -> [Ag(NH3)2](+)(aq)
+A
+According to the equation, how many moles of potassium chlorate, KClO3, must be decomposed to generate 1.0L of O2 gas at stp?
+notfalse
+(1/3)(1/22.4) mol
+(1/2)(1/22.4) mol
+(2/3)(1/22.4) mol
+(3/2)(1/22.4) mol
+C
+Which of the following ions has the same number of electrons as Br(-)?
+false
+Ca(2+)
+K(+)
+Sr(2+)
+I(-)
+C
+In solid methane, the forces between neighboring CH4 molecules are best characterized as
+false
+Covalent bonds
+hydrogen bonds
+ion-dipole forces
+London (dispersion) forces
+D
+Of the following electron configurations of neutral atoms, which represents an atom in an excited state?
+false
+1s2 2s2 2p5
+1s2 2s2 2p5 3s2
+1s2 2s2 2p6 3s2 3p2
+1s2 2s2 2p6 3s2 3p5
+B
+Which of the following is a nonpolar molecule that contains polar bonds?
+false
+F2
+CHF3
+CO2
+NH3
+C
+The oxidation state that is common to aqueous ions of Fe, Mn, and Zn is
+false
++1
++2
++3
++4
+B
+Which of the following shows the correct number of protons, neutrons, and electrons in a neutral cesium-134 atom?
+false
+55 protons, 55 neutrons, 55 electrons
+55 protons, 79 neutrons, 55 electrons
+79 protons, 55 neutrons, 79 electrons
+134 protons, 55 neutrons, 134 electons
 B
