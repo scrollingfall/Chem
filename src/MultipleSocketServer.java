@@ -657,9 +657,10 @@ public class MultipleSocketServer implements Runnable {
 					qqpanel.setLayout(new GridLayout(1,2));
 					JTextArea ta=new JTextArea();
 					ta.setEditable(false);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,24));
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
+					ta.setMargin(new Insets(0,15,0,15));
 					ta.append(q.getQuestion()+"\n\n");
 					ArrayList<String>temp=q.getAnswers();
 					for(int i=0;i<temp.size();i++)
@@ -675,7 +676,8 @@ public class MultipleSocketServer implements Runnable {
 					ta.setEditable(false);
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,44));
+					ta.setMargin(new Insets(0,15,0,15));
 					ta.append(q.getQuestion()+"\n\n");
 					ArrayList<String>temp=q.getAnswers();
 					for(int i=0;i<temp.size();i++)
@@ -750,12 +752,14 @@ public class MultipleSocketServer implements Runnable {
 
 				if(q.isHasImage())
 				{
+					/*/
 					qqpanel.setLayout(new GridLayout(1,2));
 					JTextArea ta=new JTextArea();
 					ta.setEditable(false);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,24));
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
+					ta.setMargin(new Insets(0,15,0,15));
 					ta.append(q.getQuestion()+"\n\n");
 					ArrayList<String>temp=q.getAnswers();
 					for(int i=0;i<temp.size();i++)
@@ -763,6 +767,52 @@ public class MultipleSocketServer implements Runnable {
 					qqpanel.add(ta);
 					JLabel picLabel=new JLabel(new ImageIcon(q.getImage()));
 					qqpanel.add(picLabel);
+					//*/
+					qqpanel.setLayout(new GridBagLayout());
+					GridBagConstraints gbc = new GridBagConstraints();
+					gbc.gridx = 0;
+					gbc.gridy = 0;
+					gbc.fill = GridBagConstraints.BOTH;
+					gbc.weightx = 1.0;
+					gbc.weighty = 1.0;
+					qqpanel.add(Box.createGlue(), gbc);
+					
+					JTextArea ta=new JTextArea();
+					ta.setOpaque(false);
+					ta.setEditable(false);
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,44));
+					ta.setLineWrap(true);
+					ta.setWrapStyleWord(true);
+					ta.setMargin(new Insets(0,15,0,15));
+					ta.append(q.getQuestion()+"\n\n");
+					ArrayList<String>temp=q.getAnswers();
+					for(int i=0;i<temp.size();i++)
+						ta.append((char)(i+65)+": "+temp.get(i)+"\n");
+					GridBagConstraints c2=new GridBagConstraints();
+					c2.gridx=0;
+					c2.gridy=0;
+					c2.gridwidth=2;
+					c2.gridheight=2;
+					c2.fill=GridBagConstraints.BOTH;
+					c2.weightx=1.0;
+					c2.weighty=1.0;
+					qqpanel.add(ta,c2);
+					//JPanel qqqpanel=new JPanel();
+
+					JLabel picLabel=new JLabel(new ImageIcon(q.getImage()));
+					picLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+					picLabel.setHorizontalAlignment(JLabel.RIGHT);
+					picLabel.setVerticalAlignment(JLabel.BOTTOM);
+					c2=new GridBagConstraints();
+					c2.gridx=1;
+					c2.gridy=1;
+					//c2.gridwidth=1;
+					//c2.gridheight=1;
+					c2.fill=GridBagConstraints.NONE;
+					c2.weightx=0;
+					c2.weighty=0;
+					c2.insets=new Insets(0,0,15,15);
+					qqpanel.add(picLabel,c2);
 				}
 				else
 				{
@@ -771,7 +821,8 @@ public class MultipleSocketServer implements Runnable {
 					ta.setEditable(false);
 					ta.setLineWrap(true);
 					ta.setWrapStyleWord(true);
-					ta.setFont(new Font("Times New Roman", Font.PLAIN,48));
+					ta.setFont(new Font("Times New Roman", Font.PLAIN,44));
+					ta.setMargin(new Insets(0,15,0,15));
 					ta.append(q.getQuestion()+"\n\n");
 					ArrayList<String>temp=q.getAnswers();
 					for(int i=0;i<temp.size();i++)
@@ -862,7 +913,7 @@ public class MultipleSocketServer implements Runnable {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
 	}
 	public static int getMaxFittingFontSize(Graphics g, Font font, String string, int width, int height){
